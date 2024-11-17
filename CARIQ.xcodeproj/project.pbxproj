@@ -16,6 +16,9 @@
 		338E89BF2CE999CB002741C3 /* CARIQTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E89BE2CE999CB002741C3 /* CARIQTests.swift */; };
 		338E89C92CE999CB002741C3 /* CARIQUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E89C82CE999CB002741C3 /* CARIQUITests.swift */; };
 		338E89CB2CE999CB002741C3 /* CARIQUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E89CA2CE999CB002741C3 /* CARIQUITestsLaunchTests.swift */; };
+		338E89D82CE9D6AF002741C3 /* ChatVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E89D72CE9D6AF002741C3 /* ChatVC.swift */; };
+		338E89DA2CE9D862002741C3 /* AnalysisVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E89D92CE9D862002741C3 /* AnalysisVC.swift */; };
+		338E89DD2CE9FEF0002741C3 /* SurveyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 338E89DC2CE9FEF0002741C3 /* SurveyVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +52,9 @@
 		338E89C42CE999CB002741C3 /* CARIQUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CARIQUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		338E89C82CE999CB002741C3 /* CARIQUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CARIQUITests.swift; sourceTree = "<group>"; };
 		338E89CA2CE999CB002741C3 /* CARIQUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CARIQUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		338E89D72CE9D6AF002741C3 /* ChatVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatVC.swift; sourceTree = "<group>"; };
+		338E89D92CE9D862002741C3 /* AnalysisVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisVC.swift; sourceTree = "<group>"; };
+		338E89DC2CE9FEF0002741C3 /* SurveyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SurveyVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,9 +105,9 @@
 		338E89A62CE999C8002741C3 /* CARIQ */ = {
 			isa = PBXGroup;
 			children = (
+				338E89DB2CE9DABC002741C3 /* VCs */,
 				338E89A72CE999C8002741C3 /* AppDelegate.swift */,
 				338E89A92CE999C8002741C3 /* SceneDelegate.swift */,
-				338E89AB2CE999C8002741C3 /* ViewController.swift */,
 				338E89AD2CE999C8002741C3 /* Main.storyboard */,
 				338E89B02CE999CB002741C3 /* Assets.xcassets */,
 				338E89B22CE999CB002741C3 /* LaunchScreen.storyboard */,
@@ -125,6 +131,18 @@
 				338E89CA2CE999CB002741C3 /* CARIQUITestsLaunchTests.swift */,
 			);
 			path = CARIQUITests;
+			sourceTree = "<group>";
+		};
+		338E89DB2CE9DABC002741C3 /* VCs */ = {
+			isa = PBXGroup;
+			children = (
+				338E89DC2CE9FEF0002741C3 /* SurveyVC.swift */,
+				338E89AB2CE999C8002741C3 /* ViewController.swift */,
+				338E89D92CE9D862002741C3 /* AnalysisVC.swift */,
+				338E89D72CE9D6AF002741C3 /* ChatVC.swift */,
+			);
+			name = VCs;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,8 +276,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				338E89D82CE9D6AF002741C3 /* ChatVC.swift in Sources */,
 				338E89AC2CE999C8002741C3 /* ViewController.swift in Sources */,
+				338E89DD2CE9FEF0002741C3 /* SurveyVC.swift in Sources */,
 				338E89A82CE999C8002741C3 /* AppDelegate.swift in Sources */,
+				338E89DA2CE9D862002741C3 /* AnalysisVC.swift in Sources */,
 				338E89AA2CE999C8002741C3 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -446,7 +467,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CARIQ/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = Main.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -474,7 +495,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CARIQ/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
-				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UILaunchStoryboardName = Main.storyboard;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
