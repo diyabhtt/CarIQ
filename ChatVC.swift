@@ -10,19 +10,74 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
 
     // Data Source for Messages
     private var messages: [String] = []
-    private var aiResponses: [String] = []
-
-    private let apiKey = "555f69be-20cc-428f-bdd6-2ef72033279c"
-    private let apiUrl = "https://api.sambanova.ai/v1/chat/completions"
+    
+    // Data from the file
+    private var contextData: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
+        // Load the data file
+        loadData()
+
         // Setup the Chat Interface
         setupTableView()
         setupInputContainer()
         setupConstraints()
     }
+
+    // load
+    private func loadData() {
+        //let file2021Path = "/Users/diyabhattarai/Downloads/2021.txt"
+        //let file2022Path = "/Users/diyabhattarai/Downloads/2022.txt"
+        //let file2023Path = "/Users/diyabhattarai/Downloads/2023.txt"
+        //let file2024Path = "/Users/diyabhattarai/Downloads/2024.txt"
+        let file2025Path = "/Users/diyabhattarai/Downloads/2025.txt"
+        
+        var combinedData = ""
+        
+        
+//        if let file2021Data = try? String(contentsOfFile: file2021Path) {
+//            combinedData += file2021Data + "\n"
+//        } else {
+//            print("Error: Could not load data from \(file2021Path).")
+//        }
+        
+        
+//        if let file2022Data = try? String(contentsOfFile: file2022Path) {
+//            combinedData += file2022Data + "\n"
+//        } else {
+//            print("Error: Could not load data from \(file2022Path).")
+//        }
+        
+       
+//        if let file2023Data = try? String(contentsOfFile: file2023Path) {
+//            combinedData += file2023Data + "\n"
+//        } else {
+//            print("Error: Could not load data from \(file2023Path).")
+//        }
+        
+        
+//        if let file2024Data = try? String(contentsOfFile: file2024Path) {
+//            combinedData += file2024Data + "\n"
+//        } else {
+//            print("Error: Could not load data from \(file2024Path).")
+//        }
+        
+        
+        if let file2025Data = try? String(contentsOfFile: file2025Path) {
+            combinedData += file2025Data
+        } else {
+            print("Error: Could not load data from \(file2025Path).")
+        }
+        
+        
+        contextData = combinedData
+    }
+
+
+
+
 
     // MARK: - TableView Setup
     private func setupTableView() {
@@ -93,19 +148,12 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
 
     // MARK: - UITableView DataSource & Delegate
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count + aiResponses.count
+        return messages.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath)
-        // Alternate between user and AI messages
-        if indexPath.row % 2 == 0 {
-            cell.textLabel?.text = messages[indexPath.row / 2]  // User message
-            cell.textLabel?.textColor = .blue
-        } else {
-            cell.textLabel?.text = aiResponses[(indexPath.row - 1) / 2]  // AI message
-            cell.textLabel?.textColor = .gray
-        }
+        cell.textLabel?.text = messages[indexPath.row]
         cell.textLabel?.numberOfLines = 0
         return cell
     }
@@ -124,76 +172,77 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
     // MARK: - Send Message Logic
     private func sendMessage() {
         guard let text = messageTextField.text, !text.isEmpty else { return }
-        messages.append(text) // Add user's message
+        messages.append("You: \(text)")
         messageTextField.text = ""
         tableView.reloadData()
         scrollToBottom()
 
-        // Send the question to AI after user input
-        fetchAIResponse(userMessage: text)
-    }
-
-    // MARK: - AI Chat API Call
-    private func fetchAIResponse(userMessage: String) {
-        // Prepare the data for the API request
-        let data: [String: Any] = [
-            "model": "Meta-Llama-3.2-3B-Instruct",
-            "messages": [
-                ["role": "system", "content": "You are a helpful assistant"],
-                ["role": "user", "content": userMessage]
-            ],
-            "temperature": 0.1,
-            "top_p": 0.1
-        ]
-        
-        // Set up the URLRequest
-        guard let url = URL(string: apiUrl) else { return }
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        // Convert the data to JSON
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: data, options: [])
-        } catch {
-            print("Failed to serialize data: \(error)")
-            return
-        }
-        
-        // Send the request using URLSession
-        let task = URLSession.shared.dataTask(with: request) { [weak self] (data, response, error) in
-            if let error = error {
-                print("Error: \(error)")
-                return
-            }
-            guard let data = data else { return }
-            do {
-                if let jsonResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
-                   let choices = jsonResponse["choices"] as? [[String: Any]],
-                   let aiResponse = choices.first?["message"] as? [String: Any],
-                   let content = aiResponse["content"] as? String {
-                    DispatchQueue.main.async {
-                        self?.aiResponses.append(content)
-                        self?.tableView.reloadData()
-                        self?.scrollToBottom()
-                    }
-                }
-            } catch {
-                print("Error parsing AI response: \(error)")
-            }
-        }
-        
-        task.resume()
+        // Fetch response from AI with context data
+        fetchResponse(question: text)
     }
 
     // MARK: - Helper to Scroll to Bottom
     private func scrollToBottom() {
-        let lastRowIndex = messages.count + aiResponses.count - 1
+        let lastRowIndex = messages.count - 1
         if lastRowIndex >= 0 {
             let indexPath = IndexPath(row: lastRowIndex, section: 0)
             tableView.scrollToRow(at: indexPath, at: .bottom, animated: true)
         }
     }
-}
 
+    // MARK: - Fetch Response from AI
+    private func fetchResponse(question: String) {
+        let apiKey = "8976f8f7-39b8-44fa-bdb8-11d04138318c"  // Replace with your API key
+        let url = URL(string: "https://api.sambanova.ai/v1/chat/completions")!
+        let headers = [
+            "Authorization": "Bearer \(apiKey)",
+            "Content-Type": "application/json"
+        ]
+
+        // Send context data with the question to the AI model
+        let data: [String: Any] = [
+            "model": "Meta-Llama-3.1-8B-Instruct",
+            "messages": [
+                ["role": "system", "content": "You are an AI that answers questions based on provided context data."],
+                ["role": "system", "content": "Here is the context data: \(contextData)"],
+                ["role": "user", "content": question]
+            ],
+            "temperature": 0.1,
+            "top_p": 0.1
+        ]
+
+        var request = URLRequest(url: url)
+        request.allHTTPHeaderFields = headers
+        request.httpMethod = "POST"
+        request.httpBody = try? JSONSerialization.data(withJSONObject: data)
+
+        let task = URLSession.shared.dataTask(with: request) { (data, response, error) in
+            if let error = error {
+                print("Error: Request failed. \(error)")
+                return
+            }
+
+            guard let response = response as? HTTPURLResponse, response.statusCode == 200 else {
+                print("Error: Invalid response received.")
+                return
+            }
+
+            guard let data = data,
+                  let responseData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
+                  let choices = responseData["choices"] as? [[String: Any]],
+                  let answer = choices.first?["message"] as? [String: Any],
+                  let content = answer["content"] as? String else {
+                print("Error: No valid answer received.")
+                return
+            }
+
+            DispatchQueue.main.async {
+                self.messages.append("AI: \(content)")
+                self.tableView.reloadData()
+                self.scrollToBottom()
+            }
+        }
+
+        task.resume()
+    }
+}
