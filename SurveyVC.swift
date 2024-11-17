@@ -11,7 +11,7 @@ class SurveyVC: UIViewController {
     @IBOutlet var questionLabel: UILabel!
     
     @IBOutlet var choicesButton: [UIButton]!
-    // Data for questions and answers
+   
         private let questions = [
             "What year do you prefer?",
             "What type of transmission do you want?",
@@ -26,7 +26,7 @@ class SurveyVC: UIViewController {
             ["Yes", "No"] // Highway driving
         ]
 
-        // Example Toyota cars data
+        
         private let toyotaCars = [
             ["Toyota Prius", "2024", "Electric", "Automatic"],
             ["Toyota Camry", "2023", "Gas", "Automatic"],
@@ -35,10 +35,10 @@ class SurveyVC: UIViewController {
             ["Toyota bZ4X", "2023", "Electric", "Automatic"]
         ]
 
-        // User selections
+     
         private var userSelections: [String] = []
 
-        // Current question index
+     
         private var currentQuestionIndex = 0
 
         override func viewDidLoad() {
@@ -46,12 +46,12 @@ class SurveyVC: UIViewController {
             loadQuestion()
         }
 
-        // Load the current question and answer choices
+       
         private func loadQuestion() {
             questionLabel.text = questions[currentQuestionIndex]
             let currentAnswers = answers[currentQuestionIndex]
 
-            // Configure buttons based on the number of answer choices
+            
             for (index, button) in choicesButton.enumerated() {
                 if index < currentAnswers.count {
                     button.setTitle(currentAnswers[index], for: .normal)
@@ -62,14 +62,14 @@ class SurveyVC: UIViewController {
             }
         }
 
-        // Handle button tap to record the answer
+       
         @IBAction func choiceButtonTapped(_ sender: UIButton) {
             guard let answer = sender.title(for: .normal) else { return }
 
-            // Save user selection
+        
             userSelections.append(answer)
 
-            // Load the next question or finish the survey
+          
             currentQuestionIndex += 1
             if currentQuestionIndex < questions.count {
                 loadQuestion()
@@ -78,16 +78,16 @@ class SurveyVC: UIViewController {
             }
         }
 
-        // Finish survey and handle the collected data
+       
         private func finishSurvey() {
-            // Find the best matching Toyota car
+           
             let recommendedCar = findBestMatchingCar()
 
-            // Display the result in a pop-up
+        
             showRecommendationPopup(car: recommendedCar)
         }
 
-        // Match user selections to the best Toyota car
+       
         private func findBestMatchingCar() -> String {
             var bestMatch: String = "No match found"
             var bestScore = 0
@@ -110,7 +110,7 @@ class SurveyVC: UIViewController {
             return bestMatch
         }
 
-        // Show recommendation pop-up
+       
         private func showRecommendationPopup(car: String) {
             let alert = UIAlertController(
                 title: "Recommended Car",

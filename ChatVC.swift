@@ -2,25 +2,25 @@ import UIKit
 
 class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITextFieldDelegate {
 
-    // UI Elements
+   
     private let tableView = UITableView()
     private let inputContainerView = UIView()
     private let messageTextField = UITextField()
     private let sendButton = UIButton(type: .system)
 
-    // Data Source for Messages
+   
     private var messages: [String] = []
     
-    // Data from the file
+    
     private var contextData: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Load the data file
+       
         loadData()
 
-        // Setup the Chat Interface
+        
         setupTableView()
         setupInputContainer()
         setupConstraints()
@@ -79,7 +79,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
 
 
 
-    // MARK: - TableView Setup
+    
     private func setupTableView() {
         tableView.delegate = self
         tableView.dataSource = self
@@ -90,7 +90,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
         view.addSubview(tableView)
     }
 
-    // MARK: - Input Container Setup
+    
     private func setupInputContainer() {
         inputContainerView.backgroundColor = .lightGray
         inputContainerView.translatesAutoresizingMaskIntoConstraints = false
@@ -111,9 +111,9 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
         inputContainerView.addSubview(sendButton)
     }
 
-    // MARK: - Constraints Setup
+   
     private func setupConstraints() {
-        // TableView Constraints
+       
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -121,7 +121,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
             tableView.bottomAnchor.constraint(equalTo: inputContainerView.topAnchor)
         ])
 
-        // Input Container Constraints
+        
         NSLayoutConstraint.activate([
             inputContainerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             inputContainerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -129,14 +129,14 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
             inputContainerView.heightAnchor.constraint(equalToConstant: 50)
         ])
 
-        // Message TextField Constraints
+       
         NSLayoutConstraint.activate([
             messageTextField.leadingAnchor.constraint(equalTo: inputContainerView.leadingAnchor, constant: 10),
             messageTextField.centerYAnchor.constraint(equalTo: inputContainerView.centerYAnchor),
             messageTextField.heightAnchor.constraint(equalToConstant: 35)
         ])
 
-        // Send Button Constraints
+       
         NSLayoutConstraint.activate([
             sendButton.leadingAnchor.constraint(equalTo: messageTextField.trailingAnchor, constant: 10),
             sendButton.trailingAnchor.constraint(equalTo: inputContainerView.trailingAnchor, constant: -10),
@@ -146,7 +146,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
         ])
     }
 
-    // MARK: - UITableView DataSource & Delegate
+   
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return messages.count
     }
@@ -158,18 +158,18 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
         return cell
     }
 
-    // MARK: - Send Button Action
+    
     @objc private func sendButtonTapped() {
         sendMessage()
     }
 
-    // MARK: - UITextField Delegate
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         sendMessage()
         return true
     }
 
-    // MARK: - Send Message Logic
+    
     private func sendMessage() {
         guard let text = messageTextField.text, !text.isEmpty else { return }
         messages.append("You: \(text)")
@@ -177,11 +177,11 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
         tableView.reloadData()
         scrollToBottom()
 
-        // Fetch response from AI with context data
+    
         fetchResponse(question: text)
     }
 
-    // MARK: - Helper to Scroll to Bottom
+    
     private func scrollToBottom() {
         let lastRowIndex = messages.count - 1
         if lastRowIndex >= 0 {
@@ -190,7 +190,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
         }
     }
 
-    // MARK: - Fetch Response from AI
+ 
     private func fetchResponse(question: String) {
         let apiKey = "8976f8f7-39b8-44fa-bdb8-11d04138318c"  // Replace with your API key
         let url = URL(string: "https://api.sambanova.ai/v1/chat/completions")!
@@ -199,7 +199,7 @@ class ChatVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UITe
             "Content-Type": "application/json"
         ]
 
-        // Send context data with the question to the AI model
+    
         let data: [String: Any] = [
             "model": "Meta-Llama-3.1-8B-Instruct",
             "messages": [
